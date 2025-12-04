@@ -786,50 +786,96 @@ int main() {
     // View source code
     CROW_ROUTE(app, "/code")([](const crow::request& req){
         std::string html = htmlHeader();
-        html += R"(
-            <h2>💻 Source Code</h2>
-            <p>Below is the complete C++ source code for this web application, generated through Vibe Coding:</p>
-            <div class="code-display">
-        )";
-        
-        // Display a simplified version of the code
-        html += R"CODE(
-#include "crow_all.h"
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <map>
-#include <set>
-#include <algorithm>
-#include <cmath>
-#include <memory>
-#include <unordered_map>
 
-// [Full implementation of Airport, Airline, and Route structures]
-// [Data loading functions for CSV parsing]
-// [Route handlers for all endpoints]
-// [HTML generation functions]
-// [Distance calculation using Haversine formula]
-// [Session-based data management]
-
-// This code demonstrates:
-// - Modern C++ with smart pointers
-// - STL containers (unordered_map, vector, set)
-// - Crow web framework for HTTP handling
-// - CSV data parsing
-// - Geographical calculations
-// - RESTful API design
-// - HTML templating in C++
-)CODE";
         html += R"(
+    <div style="max-width: 900px; margin: 0 auto;">
+
+        <h2 style="display: flex; align-items: center; font-size: 26px; margin-bottom: 16px;">
+            🖥️ <span style="margin-left: 10px;">Project Source Code</span>
+        </h2>
+
+        <p style="font-size: 16px; margin-bottom: 25px;">
+            This project is implemented primarily in modern <b>C++17</b> using
+            the <b>Crow Web Framework</b> for routing and HTTP handling.
+            Below is a visual breakdown of the technologies used.
+        </p>
+
+        <!-- Language Breakdown Section -->
+        <div style="margin-top: 20px;">
+
+            <h3 style="font-size: 20px; margin-bottom: 12px;">
+                📊 Language Breakdown
+            </h3>
+
+            <!-- C++ Bar -->
+            <div style="margin-bottom: 14px;">
+                <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px; font-weight: 600;">C++</span>
+                    <span style="margin-left: auto;">90%</span>
+                </div>
+                <div style="
+                    width: 100%; height: 15px; background: #ddd;
+                    border-radius: 10px; overflow: hidden;">
+                    <div style="
+                        width: 90%; height: 100%;
+                        background: linear-gradient(90deg, #6c63ff, #4fa3ff);">
+                    </div>
+                </div>
             </div>
-            <p style="margin-top: 20px;">
-                <a href="/code/download" class="btn">⬇️ Download Full Source Code</a>
-                <a href="https://github.com/PhoneMyatt11/capstone-pj-claude.git" class="btn" target="_blank" style="margin-left:10px;">
-                    🌐 View on GitHub
-                </a>
-            </p>
-        )";
+
+            <!-- HTML Bar -->
+            <div style="margin-bottom: 14px;">
+                <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px; font-weight: 600;">HTML</span>
+                    <span style="margin-left: auto;">7%</span>
+                </div>
+                <div style="
+                    width: 100%; height: 15px; background: #ddd;
+                    border-radius: 10px; overflow: hidden;">
+                    <div style="
+                        width: 7%; height: 100%;
+                        background: linear-gradient(90deg, #ff7b7b, #ff3f3f);">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CSS Bar -->
+            <div style="margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; margin-bottom: 6px;">
+                    <span style="font-size: 16px; font-weight: 600;">CSS</span>
+                    <span style="margin-left: auto;">3%</span>
+                </div>
+                <div style="
+                    width: 100%; height: 15px; background: #ddd;
+                    border-radius: 10px; overflow: hidden;">
+                    <div style="
+                        width: 3%; height: 100%;
+                        background: linear-gradient(90deg, #7be0ff, #00aaff);">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+        <div style="display: flex; gap: 14px; margin-top: 25px;">
+
+            <a href="/code/download" class="btn"
+               style="background: #6c63ff; padding: 10px 20px; font-size: 15px;">
+                ⬇️ Download Full Source Code
+            </a>
+
+            <a href="https://github.com/PhoneMyatt11/capstone-pj-claude"
+               target="_blank" rel="noopener"
+               class="btn"
+               style="background: #4fa3ff; padding: 10px 20px; font-size: 15px;">
+                🌐 View Full Source on GitHub
+            </a>
+
+        </div>
+
+    </div>
+)";
         html += htmlFooter();
         return html;
     });
@@ -1720,10 +1766,19 @@ int main() {
     });
 
     std::cout << "OpenFlights Web Service Starting...\n";
-    std::cout << "Server running on http://localhost:8080\n";
+    int port = 8080;  // fallback for local runs
+    if (const char* env_p = std::getenv("PORT")) {
+        try {
+            port = std::stoi(env_p);
+        } catch (...) {
+            port = 8080;
+        }
+    }
+
+    std::cout << "Server running on port " << port << "\n";
     std::cout << "Press Ctrl+C to stop\n";
     
-    app.port(8080).multithreaded().run();
-    
-    return 0;
-}
+    app.port(port).multithreaded().run();
+     
+     return 0;
+ }
